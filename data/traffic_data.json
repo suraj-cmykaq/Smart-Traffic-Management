@@ -46,5 +46,73 @@
             "released_vehicle": "BUS101",
             "remaining_vehicles": 0
         }
+    ],
+    "initial_ai_predictions": [
+        {
+            "intersection_id": "JAIN_CROSSROAD",
+            "road_id": "NORTH",
+            "vehicle_count": 2,
+            "density_percentage": 4.0,
+            "congestion_level": "LOW",
+            "confidence": 100.0
+        },
+        {
+            "intersection_id": "JAIN_CROSSROAD",
+            "road_id": "SOUTH",
+            "vehicle_count": 1,
+            "density_percentage": 2.0,
+            "congestion_level": "LOW",
+            "confidence": 100.0
+        },
+        {
+            "intersection_id": "JAIN_CROSSROAD",
+            "road_id": "EAST",
+            "vehicle_count": 2,
+            "density_percentage": 4.0,
+            "congestion_level": "LOW",
+            "confidence": 100.0
+        },
+        {
+            "intersection_id": "JAIN_CROSSROAD",
+            "road_id": "WEST",
+            "vehicle_count": 1,
+            "density_percentage": 2.0,
+            "congestion_level": "LOW",
+            "confidence": 100.0
+        }
+    ],
+    "final_ai_predictions": [
+        {
+            "intersection_id": "JAIN_CROSSROAD",
+            "road_id": "NORTH",
+            "vehicle_count": 0,
+            "density_percentage": 0.0,
+            "congestion_level": "LOW",
+            "confidence": 100.0
+        },
+        {
+            "intersection_id": "JAIN_CROSSROAD",
+            "road_id": "SOUTH",
+            "vehicle_count": 0,
+            "density_percentage": 0.0,
+            "congestion_level": "LOW",
+            "confidence": 100.0
+        },
+        {
+            "intersection_id": "JAIN_CROSSROAD",
+            "road_id": "EAST",
+            "vehicle_count": 1,
+            "density_percentage": 2.0,
+            "congestion_level": "LOW",
+            "confidence": 100.0
+        },
+        {
+            "intersection_id": "JAIN_CROSSROAD",
+            "road_id": "WEST",
+            "vehicle_count": 0,
+            "density_percentage": 0.0,
+            "congestion_level": "LOW",
+            "confidence": 100.0
+        }
     ]
 }

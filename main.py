@@ -2,7 +2,6 @@
 from traffic.road import Road
 from traffic.intersection import Intersection
 from traffic.traffic_light import TrafficLight
-
 from traffic.traffic_network import TrafficNetwork
 
 from patterns.vehicle_factory import VehicleFactory
@@ -16,8 +15,10 @@ from controllers.emergency_priority import EmergencyPriorityController
 from simulation.simulator import TrafficSimulator
 
 from storage.data_manager import DataManager
-from logger import get_logger
+from ai.traffic_history import TrafficHistory
+from ai.traffic_ai_service import TrafficAIService
 
+from logger import get_logger
 from config import initialize_directories
 
 
@@ -29,7 +30,6 @@ def build_traffic_system():
 
     intersection = Intersection("JAIN_CROSSROAD")
 
-    # Create roads and their corresponding traffic lights
     road_north = Road("NORTH", "North Gate", "Central Road")
     road_south = Road("SOUTH", "South Gate", "Central Road")
     road_east = Road("EAST", "East Gate", "Central Road")
@@ -58,8 +58,10 @@ def build_traffic_system():
     )
 
     road_south.add_vehicle(
-        VehicleFactory.create_vehicle("BUS", "BUS101", 40,
-                                      passenger_capacity=50)
+        VehicleFactory.create_vehicle(
+            "BUS", "BUS101", 40,
+            passenger_capacity=50
+        )
     )
 
     road_east.add_vehicle(
@@ -70,7 +72,7 @@ def build_traffic_system():
         VehicleFactory.create_vehicle("CAR", "C103", 50)
     )
 
-    # Add an emergency vehicle
+    # Add emergency vehicle
     road_west.add_vehicle(
         VehicleFactory.create_vehicle(
             "EMERGENCY",
@@ -80,7 +82,6 @@ def build_traffic_system():
         )
     )
 
-    # Build the network
     network = TrafficNetwork("SMART_CITY_TRAFFIC_NETWORK")
     network.add_intersection(intersection)
 
@@ -88,14 +89,14 @@ def build_traffic_system():
 
 
 def main():
-    """Run the Smart Traffic Management System."""
+    """Run the AI-powered Smart Traffic Management System."""
 
     try:
         initialize_directories()
 
-        print("\n" + "=" * 55)
+        print("\n" + "=" * 60)
         print("       SMART TRAFFIC MANAGEMENT SYSTEM")
-        print("=" * 55)
+        print("=" * 60)
 
         network, intersection = build_traffic_system()
 
@@ -107,39 +108,73 @@ def main():
         # Select emergency-priority strategy
         controller = EmergencyPriorityController(intersection)
 
-        # Initialize simulation
+        # Initialize traffic history
+        history_manager = TrafficHistory()
+
+        # Initialize AI service
+        ai_service = TrafficAIService()
+
+        # Perform AI congestion analysis
+        print("\n" + "=" * 60)
+        print("       INITIAL AI TRAFFIC ANALYSIS")
+        print("=" * 60)
+
+        predictions = ai_service.analyse_intersection(intersection)
+
+        ai_service.display_predictions(predictions)
+
+        # Initialize simulator
         simulator = TrafficSimulator(
             intersection,
             controller,
-            event_manager
+            event_manager,
+            history_manager
         )
 
         print("\nINITIAL NETWORK STATUS")
-        print("-" * 55)
+        print("-" * 60)
 
         for road in intersection.get_all_roads():
             print(road)
 
-        print("\n" + "=" * 55)
+        print("\n" + "=" * 60)
         print("STARTING TRAFFIC SIMULATION")
-        print("=" * 55)
+        print("=" * 60)
 
         results = simulator.run(cycles=5)
 
         print("\nSIMULATION RESULTS")
-        print("-" * 55)
+        print("-" * 60)
 
         for result in results:
             print(result)
+
+        # Perform AI analysis after simulation
+        print("\n" + "=" * 60)
+        print("       FINAL AI TRAFFIC ANALYSIS")
+        print("=" * 60)
+
+        final_predictions = ai_service.analyse_intersection(
+            intersection
+        )
+
+        ai_service.display_predictions(final_predictions)
+
+        # Save historical observations
+        history_manager.save()
+
+        print("\nTraffic history saved successfully.")
 
         # Save JSON report
         report = network.get_network_status()
         report["simulation_cycles"] = simulator.total_cycles
         report["simulation_results"] = results
+        report["initial_ai_predictions"] = predictions
+        report["final_ai_predictions"] = final_predictions
 
         DataManager.save_json(report)
 
-        # Export road information to CSV
+        # Export road information
         road_records = [
             {
                 "road_id": road.road_id,
@@ -155,9 +190,9 @@ def main():
             "data/road_report.csv"
         )
 
-        print("\n" + "=" * 55)
+        print("\n" + "=" * 60)
         print("SIMULATION COMPLETED SUCCESSFULLY")
-        print("=" * 55)
+        print("=" * 60)
 
         print("\nFinal network status:")
         print(network)
@@ -165,7 +200,9 @@ def main():
         print("\nReports saved:")
         print("- data/traffic_data.json")
         print("- data/road_report.csv")
-        print("- logs/traffic_system.log")
+        print("- data/traffic_history.csv")
+        print("- ai/traffic_model.pkl")
+        print("- logs/traffic_management.log")
 
     except Exception as error:
         logger.exception("Application failed: %s", error)

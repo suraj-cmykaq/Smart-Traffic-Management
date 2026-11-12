@@ -18,7 +18,8 @@ class TrafficSimulator:
         self,
         intersection,
         controller,
-        event_manager=None
+        event_manager=None,
+        history_manager=None
     ):
         if controller.intersection is not intersection:
             raise ValueError(
@@ -28,6 +29,7 @@ class TrafficSimulator:
         self.__intersection = intersection
         self.__controller = controller
         self.__event_manager = event_manager or TrafficSubject()
+        self.__history_manager = history_manager
         self.__running = False
         self.__total_cycles = 0
 
@@ -54,6 +56,10 @@ class TrafficSimulator:
         if delay < 0:
             raise ValueError("Delay cannot be negative.")
 
+        # Capture traffic conditions before changing the signal.
+        if self.__history_manager is not None:
+            self.__history_manager.capture(self.intersection)
+
         road_id = self.controller.select_next_road()
         road = self.intersection.get_road(road_id)
 
@@ -76,14 +82,12 @@ class TrafficSimulator:
             road_id
         )
 
-        # Keep the green signal active for its calculated duration.
         time.sleep(green_time)
 
         released_vehicle = road.remove_vehicle()
 
         traffic_light.transition_to(SignalState.YELLOW)
 
-        # Allow time for vehicles to clear the intersection.
         if delay > 0:
             time.sleep(delay)
 
