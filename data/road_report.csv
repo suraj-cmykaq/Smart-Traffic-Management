@@ -1,0 +1,5 @@
+road_id,vehicle_count,density_percentage,density_level
+NORTH,0,0.0,LOW
+SOUTH,0,0.0,LOW
+EAST,1,2.0,LOW
+WEST,0,0.0,LOW

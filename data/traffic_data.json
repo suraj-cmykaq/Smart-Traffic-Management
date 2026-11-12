@@ -1,0 +1,50 @@
+{
+    "network_name": "SMART_CITY_TRAFFIC_NETWORK",
+    "total_intersections": 1,
+    "total_vehicles": 1,
+    "intersections": {
+        "JAIN_CROSSROAD": {
+            "roads": 4,
+            "traffic_lights": 4,
+            "vehicles": 1
+        }
+    },
+    "simulation_cycles": 5,
+    "simulation_results": [
+        {
+            "cycle": 1,
+            "selected_road": "WEST",
+            "green_time": 60,
+            "released_vehicle": "AMB101",
+            "remaining_vehicles": 0
+        },
+        {
+            "cycle": 2,
+            "selected_road": "NORTH",
+            "green_time": 14,
+            "released_vehicle": "C101",
+            "remaining_vehicles": 1
+        },
+        {
+            "cycle": 3,
+            "selected_road": "EAST",
+            "green_time": 14,
+            "released_vehicle": "C102",
+            "remaining_vehicles": 1
+        },
+        {
+            "cycle": 4,
+            "selected_road": "NORTH",
+            "green_time": 12,
+            "released_vehicle": "B101",
+            "remaining_vehicles": 0
+        },
+        {
+            "cycle": 5,
+            "selected_road": "SOUTH",
+            "green_time": 12,
+            "released_vehicle": "BUS101",
+            "remaining_vehicles": 0
+        }
+    ]
+}
